@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_all"
+            android:icon="@drawable/ic_assignment_24dp"
+            android:title="@string/menu_all" />
+        <item
+            android:id="@+id/menu_category"
+            android:icon="@drawable/ic_library_books_24dp"
+            android:title="@string/menu_category" />
+        <item
+            android:id="@+id/menu_tag"
+            android:icon="@drawable/ic_local_offer_24dp"
+            android:title="@string/menu_tag" />
+        <item
+            android:id="@+id/menu_about"
+            android:icon="@drawable/ic_info_outline_24dp"
+            android:title="@string/menu_about" />
+    </group>
+
+</menu>

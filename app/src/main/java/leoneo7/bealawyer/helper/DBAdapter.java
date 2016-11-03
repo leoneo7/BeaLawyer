@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
@@ -77,6 +78,7 @@ public class DBAdapter {
     }
 
     public void saveEntry(String title, Bitmap bitmap, String numbering, int repeat, long date){
+        Log.d("DBAsaveEntry", "---------------");
         byte[] image = changeBitmapToByte(bitmap);
         ContentValues values = new ContentValues();
         values.put(TITLE, title);
