@@ -1,0 +1,11 @@
+<resources>
+    <!-- Common -->
+    <string name="app_name">BeaLawyer</string>
+
+    <!-- List -->
+
+    <!-- Edit -->
+    <string name="title">タイトル</string>
+    <string name="numbering">ナンバリング</string>
+    <string name="save">保存</string>
+</resources>
