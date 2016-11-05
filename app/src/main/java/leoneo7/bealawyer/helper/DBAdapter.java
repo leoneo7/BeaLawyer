@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 public class DBAdapter {
 
     static final String DATABASE_NAME = "bealaywer.db";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
 
     public static final String ENTRIES = "entries";
     public static final String ENTRY_ID = "entry_id";
@@ -45,7 +45,7 @@ public class DBAdapter {
             db.execSQL( "CREATE TABLE entries ("
                     + "entry_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "title TEXT NOT NULL,"
-                    + "image BLOB,"
+                    + "image TEXT,"
                     + "numbering TEXT,"
                     + "repeat INTEGER NOT NULL,"
                     + "date INTEGER NOT NULL UNIQUE);");
@@ -68,6 +68,7 @@ public class DBAdapter {
     }
 
     public Cursor getEntries(){
+        Log.d("getEntries", "-------------------");
         String sql = "SELECT * from entries";
         return db.rawQuery(sql, null);
     }
@@ -77,9 +78,13 @@ public class DBAdapter {
         return db.rawQuery(sql, null);
     }
 
-    public void saveEntry(String title, Bitmap bitmap, String numbering, int repeat, long date){
+    public Cursor getNewEntryId(){
+        String sql = "SELECT entry_id from entries WHERE entry_id = (select max(entry_id) from entries);";
+        return db.rawQuery(sql, null);
+    }
+
+    public void saveEntry(String title, String image, String numbering, int repeat, long date){
         Log.d("DBAsaveEntry", "---------------");
-        byte[] image = changeBitmapToByte(bitmap);
         ContentValues values = new ContentValues();
         values.put(TITLE, title);
         values.put(IMAGE, image);
@@ -89,8 +94,7 @@ public class DBAdapter {
         db.insertOrThrow(ENTRIES, null, values);
     }
 
-    public void updateEntry(int id, String title, Bitmap bitmap, String numbering, int repeat, long date){
-        byte[] image = changeBitmapToByte(bitmap);
+    public void updateEntry(int id, String title, String image, String numbering, int repeat, long date){
         ContentValues values = new ContentValues();
         values.put(TITLE, title);
         values.put(IMAGE, image);

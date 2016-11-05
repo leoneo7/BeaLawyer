@@ -5,14 +5,44 @@ package leoneo7.bealawyer.base;
  */
 
 public class Entry {
+    int id;
     String title;
+    String image;
+    String numbering;
     long date;
     String repeat;
 
-    public Entry(String title, long date, String repeat) {
+    public Entry(int id, String title, String image, String numbering, long date, String repeat) {
+        this.id = id;
         this.title = title;
+        this.image = image;
+        this.numbering = numbering;
         this.date = date;
         this.repeat = repeat;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getNumbering() {
+        return numbering;
+    }
+
+    public void setNumbering(String numbering) {
+        this.numbering = numbering;
     }
 
     public String getTitle() {

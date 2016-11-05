@@ -1,4 +1,4 @@
-package leoneo7.bealawyer.helper;
+package leoneo7.bealawyer.main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leoneo7.bealawyer.base.Entry;
+import leoneo7.bealawyer.helper.DBAdapter;
 
 /**
  * Created by ryouken on 2016/11/03.
@@ -35,12 +36,15 @@ public class CardRecyclerView extends RecyclerView {
         list.clear();
         DBAdapter dbAdapter = new DBAdapter(context);
         dbAdapter.open();
-        Cursor cursor = dbAdapter.getEntries();
+        Cursor cursor = dbAdapter.getEntriesByDate();
         ((Activity) context).startManagingCursor(cursor);
         if (cursor.moveToFirst()) {
             do {
                 Entry entry = new Entry(
+                        cursor.getInt(cursor.getColumnIndex(DBAdapter.ENTRY_ID)),
                         cursor.getString(cursor.getColumnIndex(DBAdapter.TITLE)),
+                        cursor.getString(cursor.getColumnIndex(DBAdapter.IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(DBAdapter.NUMBERING)),
                         cursor.getLong(cursor.getColumnIndex(DBAdapter.DATE)),
                         cursor.getString(cursor.getColumnIndex(DBAdapter.REPEAT)));
                 list.add(entry);
