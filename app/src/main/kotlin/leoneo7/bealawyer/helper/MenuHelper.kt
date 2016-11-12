@@ -19,10 +19,11 @@ import leoneo7.bealawyer.main.TagActivity
  */
 
 object MenuHelper {
-    fun setupToolBar(toolBar: Toolbar, actionBar: ActionBar?) {
+    fun setupToolBar(toolBar: Toolbar, actionBar: ActionBar?, title: String) {
         assert(actionBar != null)
         actionBar!!.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
         actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.title = title
 
         toolBar.setBackgroundColor(Color.rgb(255, 185, 0))
         toolBar.setTitleTextColor(Color.WHITE)
@@ -45,7 +46,7 @@ object MenuHelper {
     private fun createIntent(context: Context, clazz: Class<*>) {
         val intent = Intent(context, clazz)
         intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
-        (context as Activity).finish()
         context.startActivity(intent)
+        (context as Activity).finish()
     }
 }

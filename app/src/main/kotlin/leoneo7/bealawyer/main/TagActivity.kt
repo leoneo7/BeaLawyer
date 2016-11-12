@@ -42,7 +42,7 @@ class TagActivity : AppCompatActivity() {
     private fun setupToolBar() {
         setSupportActionBar(mToolBar)
         val actionBar = supportActionBar
-        MenuHelper.setupToolBar(mToolBar, actionBar)
+        MenuHelper.setupToolBar(mToolBar, actionBar, getString(R.string.menu_tag))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

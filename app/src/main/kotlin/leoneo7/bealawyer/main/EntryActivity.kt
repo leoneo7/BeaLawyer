@@ -46,7 +46,7 @@ class EntryActivity : AppCompatActivity() {
     private fun setupToolBar() {
         setSupportActionBar(mToolBar)
         val actionBar = supportActionBar
-        MenuHelper.setupToolBar(mToolBar, actionBar)
+        MenuHelper.setupToolBar(mToolBar, actionBar, getString(R.string.menu_all))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

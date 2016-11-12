@@ -162,6 +162,16 @@ class DBAdapter(private val context: Context) {
         db.insertOrThrow(TAGMAPS, null, values)
     }
 
+    fun deleteEntry(entryId: Int) {
+        db.beginTransaction()
+        try {
+            db.execSQL("DELETE FROM entries WHERE entry_id=" + entryId.toString() + ";")
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
     companion object {
         internal val DATABASE_NAME = "bealaywer.db"
         internal val DATABASE_VERSION = 4

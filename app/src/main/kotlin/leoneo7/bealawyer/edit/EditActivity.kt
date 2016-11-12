@@ -29,6 +29,7 @@ import leoneo7.bealawyer.helper.Const.Companion.ENTRY
 import leoneo7.bealawyer.helper.Const.Companion.REQUEST_CHOOSER
 import leoneo7.bealawyer.helper.DBAdapter
 import leoneo7.bealawyer.helper.MenuHelper
+import leoneo7.bealawyer.main.EntryActivity
 import java.util.*
 
 /**
@@ -44,6 +45,7 @@ class EditActivity : AppCompatActivity() {
     val numberingText: EditText by bindView(R.id.numbering)
     val categoryButton: Button by bindView(R.id.categoryButton)
     val categoryText: TextView by bindView(R.id.category_text)
+    val deleteButton: Button by bindView(R.id.deleteButton)
     val cameraButton: Button by bindView(R.id.cameraButton)
     val galleryButton: Button by bindView(R.id.galleryButton)
     val saveButton: FloatingActionButton by bindView(R.id.saveButton)
@@ -77,6 +79,7 @@ class EditActivity : AppCompatActivity() {
     private fun setupListener() {
         categoryButton.setOnClickListener(categoryButtonListener)
         categoryText.setOnClickListener(categoryButtonListener)
+        deleteButton.setOnClickListener(deleteButtonListener)
         cameraButton.setOnClickListener(cameraButtonListener)
         galleryButton.setOnClickListener(galleryButtonListener)
         saveButton.setOnClickListener(saveButtonListener)
@@ -114,6 +117,23 @@ class EditActivity : AppCompatActivity() {
         dialogFragment.show(fragmentManager, "category")
     }
 
+    val deleteButtonListener = View.OnClickListener {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.delete_confirm)
+                .setPositiveButton("OK") { dialog, whichButton ->
+                    if (entry == null) {
+                        super.onBackPressed()
+                    } else {
+                        deleteEntry(entry!!)
+                        val intent = Intent(this, EntryActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(intent)
+                    }
+                }
+                .setNegativeButton("キャンセル") { dialog, whichButton -> }
+                .show()
+    }
+
     val cameraButtonListener = View.OnClickListener {
         useCamera()
     }
@@ -137,11 +157,10 @@ class EditActivity : AppCompatActivity() {
         val date = calendar.timeInMillis
         val categoryId = mCategory!!.id
 
-        if (entryId != null) {
+        if (entry != null) {
             entry = Entry(entryId!!, title, image, numbering, 0, date, categoryId, mCategory!!.name)
             updateEntry(entry!!)
-        }
-        else {
+        } else {
             entry = Entry(-1, title, image, numbering, 0, date, categoryId, mCategory!!.name)
             saveEntry(entry!!)
         }
@@ -175,6 +194,13 @@ class EditActivity : AppCompatActivity() {
         val dbAdapter = DBAdapter(this)
         dbAdapter.open()
         dbAdapter.updateEntry(entry)
+        dbAdapter.close()
+    }
+
+    private fun deleteEntry(entry: Entry) {
+        val dbAdapter = DBAdapter(this)
+        dbAdapter.open()
+        dbAdapter.deleteEntry(entry.entryId)
         dbAdapter.close()
     }
 
@@ -238,7 +264,7 @@ class EditActivity : AppCompatActivity() {
     private fun setupToolBar() {
         setSupportActionBar(mToolBar)
         val actionBar = supportActionBar
-        MenuHelper.setupToolBar(mToolBar, actionBar)
+        MenuHelper.setupToolBar(mToolBar, actionBar, "")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -33,19 +33,11 @@
                 android:layout_margin="15dp">
 
                 <TextView
-                    android:id="@+id/title"
-                    android:text="@string/menu_about"
-                    android:textSize="22sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
                     android:id="@+id/purpose_title"
                     android:textSize="20sp"
                     android:text="@string/about_purpose"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/purpose_text"

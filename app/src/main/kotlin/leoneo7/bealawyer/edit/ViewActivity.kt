@@ -7,9 +7,12 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.ButterKnife
@@ -20,6 +23,7 @@ import leoneo7.bealawyer.helper.Const.Companion.ENTRY
 import leoneo7.bealawyer.helper.Const.Companion.ENTRY_ID
 import leoneo7.bealawyer.helper.DBAdapter
 import leoneo7.bealawyer.helper.MenuHelper
+import leoneo7.bealawyer.main.EntryActivity
 
 /**
  * Created by ryouken on 2016/11/05.
@@ -33,6 +37,7 @@ class ViewActivity : AppCompatActivity() {
     val titleText: TextView by bindView(R.id.title)
     val imageView: ImageView by bindView(R.id.imageView)
     val categoryText: TextView by bindView(R.id.category_text)
+    val deleteButton: Button by bindView(R.id.deleteButton)
     val numberingText: TextView by bindView(R.id.numbering)
     val editButton: FloatingActionButton by bindView(R.id.editButton)
 
@@ -67,18 +72,41 @@ class ViewActivity : AppCompatActivity() {
     }
 
     private fun setupListener() {
-         editButton.setOnClickListener {
-             val intent = Intent(this, EditActivity::class.java)
-             if (entry!!.entryId == -1) getNewEntryId()
-             intent.putExtra(ENTRY, entry)
-             startActivity(intent)
-         }
+         editButton.setOnClickListener(editButtonListener)
+        deleteButton.setOnClickListener(deleteButtonListener)
+    }
+
+    val editButtonListener = View.OnClickListener {
+        val intent = Intent(this, EditActivity::class.java)
+        if (entry!!.entryId == -1) getNewEntryId()
+        intent.putExtra(ENTRY, entry)
+        startActivity(intent)
+    }
+
+    val deleteButtonListener = View.OnClickListener {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.delete_confirm)
+                .setPositiveButton("OK") { dialog, whichButton ->
+                    deleteEntry(entry!!)
+                    val intent = Intent(this, EntryActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+                .setNegativeButton("キャンセル") { dialog, whichButton -> }
+                .show()
+    }
+
+    private fun deleteEntry(entry: Entry) {
+        val dbAdapter = DBAdapter(this)
+        dbAdapter.open()
+        dbAdapter.deleteEntry(entry.entryId)
+        dbAdapter.close()
     }
 
     private fun setupToolBar() {
         setSupportActionBar(mToolBar)
         val actionBar = supportActionBar
-        MenuHelper.setupToolBar(mToolBar, actionBar)
+        MenuHelper.setupToolBar(mToolBar, actionBar, "")
     }
 
     private fun getNewEntryId() {
