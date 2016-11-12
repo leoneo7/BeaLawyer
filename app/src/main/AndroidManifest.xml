@@ -21,7 +21,8 @@
         <activity android:name=".main.TagActivity"/>
         <activity android:name=".main.AboutAppActivity"/>
         <activity android:name=".edit.ViewActivity"/>
-        <activity android:name=".edit.EditActivity"/>
+        <activity android:name=".edit.EditActivity"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

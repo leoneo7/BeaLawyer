@@ -5,13 +5,26 @@
     <string name="menu_category">カテゴリ</string>
     <string name="menu_tag">タグ</string>
     <string name="menu_about">このアプリについて</string>
+    <!-- Entry -->
 
-    <!-- List -->
+    <!-- Category -->
+    <string name="category_name">カテゴリーの名前</string>
+    <string name="category_choose">カテゴリーを選択</string>
 
     <!-- Edit -->
     <string name="title">タイトル</string>
-    <string name="numbering">ナンバリング</string>
+    <string name="numbering">ナンバリングを入力</string>
     <string name="save">保存</string>
     <string name="no_title_error">タイトルは必ず入力してください</string>
+    <string name="no_category_error">カテゴリーは必ず入力してください</string>
+    <string name="no_save_yet">編集された情報は破棄されますがよろしいですか？</string>
+
+    <!-- AboutApp-->
+    <string name="about_purpose">目的</string>
+    <string name="about_purpose_text">このアプリは法律系の勉強をしている人の補助をするためのものです。</string>
+    <string name="about_usage">使い方</string>
+    <string name="about_usage_text">まずはこうしてください。</string>
+    <string name="about_future">今後の機能予定</string>
+    <string name="about_future_text">・自分の答案をシェアできたり、他人の答案を見ることができる</string>
 
 </resources>
