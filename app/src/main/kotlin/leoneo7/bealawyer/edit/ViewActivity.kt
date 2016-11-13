@@ -1,6 +1,9 @@
 package leoneo7.bealawyer.edit
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Point
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -12,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,6 +28,8 @@ import leoneo7.bealawyer.helper.Const.Companion.ENTRY_ID
 import leoneo7.bealawyer.helper.DBAdapter
 import leoneo7.bealawyer.helper.MenuHelper
 import leoneo7.bealawyer.main.EntryActivity
+
+
 
 /**
  * Created by ryouken on 2016/11/05.
@@ -72,8 +78,9 @@ class ViewActivity : AppCompatActivity() {
     }
 
     private fun setupListener() {
-         editButton.setOnClickListener(editButtonListener)
+        editButton.setOnClickListener(editButtonListener)
         deleteButton.setOnClickListener(deleteButtonListener)
+        imageView.setOnClickListener(imageViewListener)
     }
 
     val editButtonListener = View.OnClickListener {
@@ -94,6 +101,24 @@ class ViewActivity : AppCompatActivity() {
                 }
                 .setNegativeButton("キャンセル") { dialog, whichButton -> }
                 .show()
+    }
+
+    val imageViewListener = View.OnClickListener {
+        val view = ImageView(this)
+        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        view.setImageBitmap(bitmap)
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val width = size.x
+
+        val factor = (width / bitmap.width).toFloat()
+        view.scaleType = ImageView.ScaleType.FIT_CENTER
+        val dialog = Dialog(this)
+        dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(view)
+        dialog.window.setLayout((bitmap.width * factor).toInt(), (bitmap.height * factor).toInt())
+        dialog.show()
     }
 
     private fun deleteEntry(entry: Entry) {

@@ -56,7 +56,7 @@ class EntryRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<
 
         vh.title.text = entry.title
         vh.date.text = dateString
-        vh.repeat.text = entry.repeat.toString() + "回"
+//        vh.repeat.text = entry.repeat.toString() + "回"
         vh.layout.setOnClickListener {
             val intent = Intent(context, ViewActivity::class.java)
             intent.putExtra(ENTRY, entry)

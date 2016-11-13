@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -101,6 +102,7 @@ class EditActivity : AppCompatActivity() {
         if (image != null) uri = Uri.parse(image)
         else uri = null
         if (uri != null) {
+            Log.d("setImageView", "-------------------")
             imageView.setImageURI(uri)
             imageView.visibility = View.VISIBLE
             layoutBox.visibility = View.GONE
@@ -255,7 +257,6 @@ class EditActivity : AppCompatActivity() {
                     arrayOf("image/jpeg"), null)
 
             imageView.setImageURI(resultUri)
-
             imageView.visibility = View.VISIBLE
             layoutBox.visibility = View.GONE
         }
