@@ -12,7 +12,6 @@ import leoneo7.bealawyer.R
 import leoneo7.bealawyer.main.AboutAppActivity
 import leoneo7.bealawyer.main.CategoryActivity
 import leoneo7.bealawyer.main.EntryActivity
-import leoneo7.bealawyer.main.TagActivity
 
 /**
  * Created by ryouken on 2016/11/03.
@@ -34,7 +33,7 @@ object MenuHelper {
             when (menuItem.itemId) {
                 R.id.menu_all -> createIntent(context, EntryActivity::class.java)
                 R.id.menu_category -> createIntent(context, CategoryActivity::class.java)
-                R.id.menu_tag -> createIntent(context, TagActivity::class.java)
+//                R.id.menu_tag -> createIntent(context, TagActivity::class.java)
                 R.id.menu_about -> createIntent(context, AboutAppActivity::class.java)
                 else -> {
                 }

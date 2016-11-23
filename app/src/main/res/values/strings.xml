@@ -14,7 +14,7 @@
 
     <!-- Edit -->
     <string name="title">タイトル</string>
-    <string name="numbering">ナンバリングを入力</string>
+    <string name="numbering">"1\n (1)\n  ア\n   (ア)\n   (イ)\n   (ウ)\n  イ\n   (ア)\n   (イ)\n   (ウ)\n  ウ\n   (ア)\n   (イ)\n   (ウ)\n\n (2)\n  ア\n   (ア)\n   (イ)\n   (ウ)\n  イ\n   (ア)\n   (イ)\n   (ウ)\n  ウ\n   (ア)\n   (イ)\n   (ウ)\n"</string>
     <string name="save">保存</string>
     <string name="no_title_error">タイトルは必ず入力してください</string>
     <string name="no_category_error">カテゴリーは必ず入力してください</string>
@@ -23,10 +23,13 @@
 
     <!-- AboutApp-->
     <string name="about_purpose">目的</string>
-    <string name="about_purpose_text">このアプリは法律系の勉強をしている人の補助をするためのものです。</string>
+    <string name="about_purpose_text">法律系の勉強をしている人が答案構成作成や検索などを簡単にできるようにするためのものです。</string>
     <string name="about_usage">使い方</string>
-    <string name="about_usage_text">まずはこうしてください。</string>
+    <string name="about_usage_text">・まずはいくつかカテゴリを設定してください。大学ごとに分ける、科目ごとに分けるなどカスタマイズは自由です。
+    \n・答案構成のページでは手元のノートに書いた図を写真として保存することができます。
+    \n・ナンバリングはデフォルトで入力されているので、適宜修正をしてください。</string>
     <string name="about_future">今後の機能予定</string>
-    <string name="about_future_text">・自分の答案をシェアできたり、他人の答案を見ることができる</string>
+    <string name="about_future_text">・自分の答案をシェアできたり、他人の答案を見ることができる
+        \n・タグ、ワードで検索ができる</string>
 
 </resources>

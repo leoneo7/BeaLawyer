@@ -11,10 +11,10 @@
             android:id="@+id/menu_category"
             android:icon="@drawable/ic_library_books_24dp"
             android:title="@string/menu_category" />
-        <item
-            android:id="@+id/menu_tag"
-            android:icon="@drawable/ic_local_offer_24dp"
-            android:title="@string/menu_tag" />
+        <!--<item-->
+            <!--android:id="@+id/menu_tag"-->
+            <!--android:icon="@drawable/ic_local_offer_24dp"-->
+            <!--android:title="@string/menu_tag" />-->
         <item
             android:id="@+id/menu_about"
             android:icon="@drawable/ic_info_outline_24dp"
