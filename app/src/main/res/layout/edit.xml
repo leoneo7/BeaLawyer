@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#00000000"
-                    android:text="@string/numbering"
+                    android:hint="@string/numbering2"
                     android:minHeight="80dp"
                     android:paddingTop="0dp"
                     android:paddingLeft="10dp" />

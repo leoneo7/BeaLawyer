@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import butterknife.ButterKnife
@@ -32,6 +33,7 @@ import leoneo7.bealawyer.helper.DBAdapter
 import leoneo7.bealawyer.helper.MenuHelper
 import leoneo7.bealawyer.main.EntryActivity
 import java.util.*
+
 
 /**
  * Created by ryouken on 2016/11/01.
@@ -51,6 +53,7 @@ class EditActivity : AppCompatActivity() {
     val galleryButton: Button by bindView(R.id.galleryButton)
     val saveButton: FloatingActionButton by bindView(R.id.saveButton)
     val layoutBox: LinearLayout by bindView(R.id.layoutBox)
+
     private var entry: Entry? = null
     private var entryId: Int? = null
     private var image: String? = null
@@ -84,6 +87,13 @@ class EditActivity : AppCompatActivity() {
         cameraButton.setOnClickListener(cameraButtonListener)
         galleryButton.setOnClickListener(galleryButtonListener)
         saveButton.setOnClickListener(saveButtonListener)
+        numberingText.setOnFocusChangeListener { view, b ->
+            if (view.hasFocus()) {
+                numberingText.setOnTouchListener(FlickTouchListener(numberingText))
+            } else {
+                numberingText.setOnTouchListener(null)
+            }
+        }
     }
 
     private fun setupData() {
@@ -101,6 +111,7 @@ class EditActivity : AppCompatActivity() {
         val uri: Uri?
         if (image != null) uri = Uri.parse(image)
         else uri = null
+
         if (uri != null) {
             Log.d("setImageView", "-------------------")
             imageView.setImageURI(uri)
@@ -136,13 +147,9 @@ class EditActivity : AppCompatActivity() {
                 .show()
     }
 
-    val cameraButtonListener = View.OnClickListener {
-        useCamera()
-    }
+    val cameraButtonListener = View.OnClickListener { useCamera() }
 
-    val galleryButtonListener = View.OnClickListener {
-        useGallery()
-    }
+    val galleryButtonListener = View.OnClickListener { useGallery() }
 
     val saveButtonListener = View.OnClickListener {
         val title = titleText.text.toString()
@@ -209,10 +216,9 @@ class EditActivity : AppCompatActivity() {
     private fun useCamera() {
         val photoName: String
         val title: String? = titleText.text.toString()
-        if (title != null)
-            photoName = "BeaLawyer/$title.jpg"
-        else
-            photoName = "BeaLawyer/" + System.currentTimeMillis() + ".jpg"
+
+        if (title != null) photoName = "BeaLawyer/$title.jpg"
+        else photoName = "BeaLawyer/" + System.currentTimeMillis() + ".jpg"
 
         val contentValues = ContentValues()
         contentValues.put(MediaStore.Images.Media.TITLE, photoName)
@@ -243,15 +249,12 @@ class EditActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CHOOSER) {
-            if (resultCode != Activity.RESULT_OK) {
-                return
-            }
+            if (resultCode != Activity.RESULT_OK) return
 
             val resultUri = if (data.data != null) data.data else mUri
-            if (resultUri == null)
-                return
-            else
-                image = resultUri.toString()
+
+            if (resultUri == null) return
+            else image = resultUri.toString()
 
             MediaScannerConnection.scanFile(this, arrayOf(resultUri.path),
                     arrayOf("image/jpeg"), null)
@@ -276,6 +279,116 @@ class EditActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    //--------------------------------------------------------------------------
+    // フリックされた方向を算出する
+    //--------------------------------------------------------------------------
+    class FlickTouchListener(numberingText: EditText) : View.OnTouchListener {
+        val numberingText = numberingText
+        private val numbers = arrayListOf(" (1)", " (2)", " (3)", " (4)")
+        private var numbersIndex = 0
+        private val characters = arrayListOf("   (ア)", "   (イ)", "   (ウ)", "   (エ)")
+        private var charactersIndex = 0
+
+        private var startTouchX: Float = 0.toFloat()
+        private var startTouchY: Float = 0.toFloat()
+        private var nowTouchedX: Float = 0.toFloat()
+        private var nowTouchedY: Float = 0.toFloat()
+
+        // フリックの遊び部分（最低限移動しないといけない距離）
+        private val adjust = 60f
+
+        override fun onTouch(view: View, event: MotionEvent): Boolean {
+
+            when (event.action) {
+
+            // タッチ
+                MotionEvent.ACTION_DOWN -> {
+                    Log.v("motionEvent", "--ACTION_DOWN")
+                    startTouchX = event.x
+                    startTouchY = event.y
+                }
+
+            // タッチ中に追加でタッチした場合
+                MotionEvent.ACTION_POINTER_DOWN -> Log.v("motionEvent", "--ACTION_POINTER_DOWN")
+
+            // タッチが離れた
+                MotionEvent.ACTION_UP -> {
+                    Log.v("motionEvent", "--ACTION_UP")
+                    nowTouchedX = event.x
+                    nowTouchedY = event.y
+
+                    if (startTouchY > nowTouchedY) {
+                        if (startTouchX > nowTouchedX) {
+                            if (startTouchY - nowTouchedY > startTouchX - nowTouchedX) {
+                                if (startTouchY > nowTouchedY + adjust) {
+                                    Log.v("Flick", "上1")
+                                }
+                            } else if (startTouchY - nowTouchedY < startTouchX - nowTouchedX) {
+                                if (startTouchX > nowTouchedX + adjust) {
+                                    Log.v("Flick", "左1")
+                                    insertNumbering(isNumbers = false)
+                                }
+                            }
+                        } else if (startTouchX < nowTouchedX) {
+                            if (startTouchY - nowTouchedY > nowTouchedX - startTouchX) {
+                                if (startTouchY > nowTouchedY + adjust) {
+                                    Log.v("Flick", "上2")
+                                }
+                            } else if (startTouchY - nowTouchedY < nowTouchedX - startTouchX) {
+                                if (startTouchX < nowTouchedX + adjust) {
+                                    Log.v("Flick", "右1")
+                                    insertNumbering(isNumbers = true)
+                                }
+                            }
+                        }
+                    } else if (startTouchY < nowTouchedY) {
+                        if (startTouchX > nowTouchedX) {
+                            if (nowTouchedY - startTouchY > startTouchX - nowTouchedX) {
+                                if (startTouchY < nowTouchedY + adjust) {
+                                    Log.v("Flick", "下1")
+                                }
+                            } else if (nowTouchedY - startTouchY < startTouchX - nowTouchedX) {
+                                if (startTouchX > nowTouchedX + adjust) {
+                                    Log.v("Flick", "左2")
+                                    insertNumbering(isNumbers = false)
+                                }
+                            }
+                        } else if (startTouchX < nowTouchedX) {
+                            if (nowTouchedY - startTouchY > nowTouchedX - startTouchX) {
+                                if (startTouchY < nowTouchedY + adjust) {
+                                    Log.v("Flick", "下2")
+                                }
+                            } else if (nowTouchedY - startTouchY < nowTouchedX - startTouchX) {
+                                if (startTouchX < nowTouchedX + adjust) {
+                                    Log.v("Flick", "右2")
+                                    insertNumbering(isNumbers = true)
+                                }
+                            }
+                        }
+                    }
+                }
+
+            // アップ後にほかの指がタッチ中の場合
+                MotionEvent.ACTION_POINTER_UP -> Log.v("motionEvent", "--ACTION_POINTER_UP")
+
+            // ターゲットとするUIの範囲外を押下
+                MotionEvent.ACTION_OUTSIDE -> Log.v("motionEvent", "--ACTION_OUTSIDE")
+            }
+            return true
+        }
+
+        private fun insertNumbering(isNumbers: Boolean) {
+            val replaceText = if (isNumbers) numbers[numbersIndex]
+                              else characters[charactersIndex]
+            if (isNumbers && numbersIndex < 3) numbersIndex++
+            else if (!isNumbers && charactersIndex < 3) charactersIndex++
+            val start = numberingText.selectionStart
+            val end = numberingText.selectionEnd
+            val editable = numberingText.text
+            editable.replace(Math.min(start, end), Math.max(start, end), replaceText)
+        }
     }
 
 }

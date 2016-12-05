@@ -24,6 +24,8 @@ import leoneo7.bealawyer.helper.Const.Companion.TITLE
 import leoneo7.bealawyer.helper.DBAdapter
 import java.util.*
 
+
+
 /**
  * Created by ryouken on 2016/11/03.
  */
